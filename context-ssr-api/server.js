@@ -25,12 +25,15 @@ async function createServer() {
   // middlewares). The following is valid even after restarts.
   app.use(vite.middlewares)
 
-  app.get("/api/user", (req, res) => {
-    res.json({
-        name: "Josh - Server",
-        role: "Server Admin"
-    });
-  });
+app.get("/ssr-users",async(req,res)=>{
+    const response = await fetch(
+        "https://jsonplaceholder.typicode.com/users"
+    );
+
+    const users = await response.json();
+    
+    res.json([users]);
+});
 
   app.use('*all', async (req, res, next) => {
       const url = req.originalUrl
